@@ -9,39 +9,19 @@ import { of, Observable } from 'rxjs';
         <fieldset>
             <div  *ngIf="checkMode == 'multiple'">
                 <label class="k-form-field right">
-                    <input
-                        type="checkbox"
-                        id="enableCheck"
-                        class="k-checkbox"
-                        [(ngModel)]="enableCheck"
-                    />
+                    <input type="checkbox" id="enableCheck" class="k-checkbox" [(ngModel)]="enableCheck"/>
                     <label class="k-checkbox-label" for="enableCheck">Enable Checkboxes</label>
                 </label>
                 <label class="k-form-field right">
-                    <input
-                        type="checkbox"
-                        id="checkChildren"
-                        class="k-checkbox"
-                        [(ngModel)]="checkChildren"
-                    />
+                    <input type="checkbox" id="checkChildren" class="k-checkbox" [(ngModel)]="checkChildren"/>
                     <label class="k-checkbox-label" for="checkChildren">Check all children when parent is checked</label>
                 </label>
                 <label class="k-form-field right">
-                    <input
-                        type="checkbox"
-                        id="checkParents"
-                        class="k-checkbox"
-                        [(ngModel)]="checkParents"
-                    />
+                    <input type="checkbox" id="checkParents" class="k-checkbox" [(ngModel)]="checkParents"/>
                     <label class="k-checkbox-label" for="checkParents">Check parent when children are all checked</label>
                 </label>
                 <label class="k-form-field right">
-                    <input
-                        type="checkbox"
-                        id="checkOnClick"
-                        class="k-checkbox"
-                        [(ngModel)]="checkOnClick"
-                    />
+                    <input type="checkbox" id="checkOnClick" class="k-checkbox" [(ngModel)]="checkOnClick"/>
                     <label class="k-checkbox-label" for="checkOnClick">Check the node on click</label>
                 </label>
             </div>
@@ -52,14 +32,18 @@ import { of, Observable } from 'rxjs';
         <input [(ngModel)]="searchTerm" id="filter" #filter (keyup)='onkeyup(filter.value)' placeholder="Filter" />
         <kendo-treeview
             [nodes]="parsedData"
-            kendoTreeViewExpandable
+
             kendoTreeViewHierarchyBinding
-            textField="category"
+            textField="text"
             childrenField="children"
 
             [kendoTreeViewCheckable]="checkableSettings"
             [(checkedKeys)]="checkedKeys"
+            [checkBy]="'text'"
+            
+            kendoTreeViewExpandable
             [(expandedKeys)]="expandedKeys"
+            [expandBy]="'text'"
         >
         </kendo-treeview>
 
@@ -73,8 +57,8 @@ import { of, Observable } from 'rxjs';
   `
 })
 export class AppComponent {
-    public checkedKeys: any[] = ['0_3_4_0', '0_3_4_1', '0_3_4_2'];
-    public expandedKeys: any[] = ['0'];
+    public checkedKeys: any[] = ['0xB0C0 - RRC OTA Packet', '0xB0C1 - RRC MIB Msg', '0xB0C2 - RRC Serving Cell Info'];
+    public expandedKeys: any[] = ['All', 'LTE', 'RRC'];
 
     public enableCheck = true;
     public checkChildren = false;
@@ -93,42 +77,41 @@ export class AppComponent {
     }
 
     public data: any[] = [
-      { category: 'All', children: [
-        { category: 'CDMA'},
-        { category: 'GNSS'},
-        { category: 'Common'},
-        { category: 'LTE', children: [
-          { category: 'Event'},
-          { category: 'MAC'},
-          { category: 'RLC'},
-          { category: 'PDCP'},
-          { category: 'RRC', children: [
-            { category: '0xB0C0 - RRC OTA Packet', children: [
-              { category: 'kpi 1'},
-              { category: 'kpi 2'},
-              { category: 'kpi 3'},
-              { category: 'kpi 4'},
-              { category: 'kpi 5'},
-              { category: 'kpi 6'},
-              { category: 'kpi 7'},
-              { category: 'kpi 8'},
+      { text: 'All', children: [
+        { text: 'CDMA'},
+        { text: 'GNSS'},
+        { text: 'Common'},
+        { text: 'LTE', children: [
+          { text: 'Event'},
+          { text: 'MAC'},
+          { text: 'RLC'},
+          { text: 'PDCP'},
+          { text: 'RRC', children: [
+            { text: '0xB0C0 - RRC OTA Packet', children: [
+              { text: 'kpi 1'},
+              { text: 'kpi 2'},
+              { text: 'kpi 3'},
+              { text: 'kpi 4'},
+              { text: 'kpi 5'},
+              { text: 'kpi 6'},
+              { text: 'kpi 7'},
+              { text: 'kpi 8'},
               ]
             },
-            { category: '0xB0C1 - RRC MIB Msg'},
-            { category: '0xB0C2 - RRC Serving Cell Info'}
+            { text: '0xB0C1 - RRC MIB Msg'},
+            { text: '0xB0C2 - RRC Serving Cell Info'}
             ]
           },
-          { category: 'NAS'},
-          { category: 'LL1'},
-          { category: 'ML1'},
-          { category: 'Reserved'},
-          { category: 'VOLTE'}
+          { text: 'NAS'},
+          { text: 'LL1'},
+          { text: 'ML1'},
+          { text: 'Reserved'},
+          { text: 'VOLTE'}
           ]
         },
-        { category: 'WCDMA'},
-        { category: 'UMTS'},
-        { category: 'VERIZON'},
-
+        { text: 'WCDMA'},
+        { text: 'UMTS'},
+        { text: 'VERIZON'}
       ]}
     ];
 
@@ -141,13 +124,13 @@ export class AppComponent {
 
     public search(items: any[], term: string): any[] {
       return items.reduce((acc, item) => {
-            if (this.contains(item.category, term)) {
+            if (this.contains(item.text, term)) {
               acc.push(item);
             } else if (item.children && item.children.length > 0) {
               const newItems = this.search(item.children, term);
 
               if (newItems.length > 0) {
-                    acc.push({ category: item.category, children: newItems });
+                    acc.push({ text: item.text, children: newItems });
               }
           }
             return acc;
