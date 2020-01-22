@@ -57,7 +57,7 @@ import { of, Observable } from 'rxjs';
   `
 })
 export class AppComponent {
-    public checkedKeys: any[] = ['0xB0C0 - RRC OTA Packet', '0xB0C1 - RRC MIB Msg', '0xB0C2 - RRC Serving Cell Info'];
+    public checkedKeys: any[] = ['0xB0C0', '0xB0C1', '0xB0C2'];
     public expandedKeys: any[] = ['All', 'LTE', 'RRC'];
 
     public enableCheck = true;
@@ -87,7 +87,7 @@ export class AppComponent {
           { text: 'RLC'},
           { text: 'PDCP'},
           { text: 'RRC', children: [
-            { text: '0xB0C0 - RRC OTA Packet', children: [
+            { text: '0xB0C0', children: [
               { text: 'kpi 1'},
               { text: 'kpi 2'},
               { text: 'kpi 3'},
@@ -98,8 +98,8 @@ export class AppComponent {
               { text: 'kpi 8'},
               ]
             },
-            { text: '0xB0C1 - RRC MIB Msg'},
-            { text: '0xB0C2 - RRC Serving Cell Info'}
+            { text: '0xB0C1'},
+            { text: '0xB0C2'}
             ]
           },
           { text: 'NAS'},
