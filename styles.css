@@ -13,3 +13,4 @@ my-app > .k-icon.k-i-loading { font-size: 64px; position: absolute; top: 50%; le
 .event-log li:last-child { margin-bottom: -1px;}
 label { display: block; }
 #filter { border-bottom: 1px solid grey; border-left: none; border-right: none; border-top: none; margin-bottom: 10px; }
+.k-checkbox { background-color: lightgray; border-color: gray}
